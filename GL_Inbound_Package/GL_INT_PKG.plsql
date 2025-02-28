@@ -1,3 +1,9 @@
+-- following code is taken from https://www.askhareesh.com/2014/08/gl-interface-package-procedure.html
+--some code was modified like uncommentating some lines 
+-- also process_flag and error_mesage did not exist in staging table as shown
+-- in the ctl file for its creation https://www.askhareesh.com/2014/08/control-file-for-gl-interface.html
+-- also some of the sample data like JETFORMS for user_je_source_name had to be modified in order for interface to work
+
 CREATE OR REPLACE PACKAGE APPS.XX_GL_INT_PKG IS --This is code block is the package header and initializes the procedures that will be defined later in the body
 
   PROCEDURE GL_INT_LOG (p_msg IN VARCHAR2); -- this procedure is for logging messages to the outfile primarily for debugging
@@ -47,7 +53,8 @@ CREATE OR REPLACE package body APPS.XX_GL_INT_PKG is --Here we actually define t
 
                 -- !!!! All below validation code blocks have the same logic, just the column and table are different
 
-            --user_je_source_name validation
+            --user_je_source_name validation 
+            --- the staging data given by default from example source had a value of JETFORMS here which does not exist in my instance, this logging helped me catch this. I changed it to 'Others'
                 begin
                     select user_je_source_name into v_gl_int.user_je_source_name
                                                 from gl_je_sources
